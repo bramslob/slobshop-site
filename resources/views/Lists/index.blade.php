@@ -5,24 +5,33 @@
 @endsection
 
 @section('content')
+
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="subtitle is-5">
+                    <strong>{{ $lists->count() }}</strong> posts
+                </p>
+            </div>
+        </div>
+        <div class="level-right">
+            <a class="button is-medium" href="{{ route('lists_create') }}">
+                <span class="icon">
+                  <i class="fa fa-plus"></i>
+                </span>
+                <span>Create</span>
+            </a>
+        </div>
+    </nav>
+
     <div class="lists-container">
         @foreach($lists as $list)
             <div class="list card">
                 <header class="card-header">
-                    <p class="card-header-title">
+                    <a class="card-header-title">
                         {{ $list['name'] }}
-                    </p>
-                    <a class="card-header-icon">
-                  <span class="icon">
-                    <i class="fa fa-angle-down"></i>
-                  </span>
                     </a>
                 </header>
-                <footer class="card-footer">
-                    <a class="card-footer-item">Archive</a>
-                    <a class="card-footer-item">Edit</a>
-                    <a class="card-footer-item">Details</a>
-                </footer>
             </div>
         @endforeach
     </div>
