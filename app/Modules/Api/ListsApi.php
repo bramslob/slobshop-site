@@ -1,19 +1,24 @@
 <?php
 
-namespace App\Modules;
+namespace App\Modules\Api;
 
-use GuzzleHttp\Client;
+use Psr\Http\Message\ResponseInterface;
 
-class SlobShopApi
+class ListsApi extends BaseApi
 {
-    /**
-     * @var Client
-     */
-    protected $client;
 
-    public function __construct()
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return bool
+     */
+    protected function checkResponse(ResponseInterface $response)
     {
-        $this->client = new Client(['base_uri' => env('SLOBSHOP_URL')]);
+        if ($response->hasHeader('Content-Length') === false) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -23,7 +28,7 @@ class SlobShopApi
     {
         $response = $this->client->get('lists');
 
-        if (!$response->hasHeader('Content-Length')) {
+        if ($this->checkResponse($response) === false) {
             return collect([]);
         }
 
@@ -52,7 +57,7 @@ class SlobShopApi
             ]
         ]);
 
-        if (!$response->hasHeader('Content-Length')) {
+        if ($this->checkResponse($response) === false) {
             return false;
         }
 

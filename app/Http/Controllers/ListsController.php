@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Modules\SlobShopApi;
+use App\Modules\Api\ListsApi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class ListsController extends BaseController
 {
     /**
-     * @param SlobShopApi $api
+     * @param ListsApi $api
      * @return \Illuminate\View\View
      */
-    public function index(SlobShopApi $api)
+    public function index(ListsApi $api)
     {
         return view('lists.index')->with([
             'lists' => $api->getLists()
@@ -29,10 +29,10 @@ class ListsController extends BaseController
 
     /**
      * @param Request $request
-     * @param SlobShopApi $api
+     * @param ListsApi $api
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, SlobShopApi $api)
+    public function store(Request $request, ListsApi $api)
     {
         $data = $request->all();
         if($api->createList(array_get($data, 'name')) === false) {
