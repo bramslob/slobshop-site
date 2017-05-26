@@ -2,21 +2,55 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Client;
+use App\Modules\SlobShopApi;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
 class ListsController extends BaseController
 {
     /**
-     * @param Client $client
+     * @param SlobShopApi $api
      * @return \Illuminate\View\View
      */
-    public function index(Client $client)
+    public function index(SlobShopApi $api)
     {
-        $response = $client->get('http://slobshop-api.dev/api/v1/lists');
+        return view('lists.index')->with([
+            'lists' => $api->getLists()
+        ]);
+    }
 
-        dd($response);
+    /**
+     * @return \Illuminate\View\View
+     */
+    public function create()
+    {
+        return view('lists.form');
+    }
 
-        return view('Lists.index');
+    /**
+     * @param Request $request
+     * @param SlobShopApi $api
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function store(Request $request, SlobShopApi $api)
+    {
+        $data = $request->all();
+        if($api->createList(array_get($data, 'name')) === false) {
+            return redirect()->back()->withErrors([
+                'name' => 'error'
+            ]);
+        }
+
+        return redirect()->route('lists_overview');
+    }
+
+    public function edit()
+    {
+        return view('lists.form');
+    }
+
+    public function update()
+    {
+
     }
 }

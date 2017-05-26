@@ -19,7 +19,7 @@
                     SlobShop
                 </h1>
                 <h2 class="subtitle">
-                    Easy shared lists
+                    @yield('subtitle', 'Easy shared lists')
                 </h2>
             </div>
         </div>
