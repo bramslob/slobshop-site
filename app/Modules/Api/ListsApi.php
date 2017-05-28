@@ -2,29 +2,13 @@
 
 namespace App\Modules\Api;
 
-use Psr\Http\Message\ResponseInterface;
-
 class ListsApi extends BaseApi
 {
 
     /**
-     * @param ResponseInterface $response
-     *
-     * @return bool
-     */
-    protected function checkResponse(ResponseInterface $response)
-    {
-        if ($response->hasHeader('Content-Length') === false) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
      * @return \Illuminate\Support\Collection
      */
-    public function getLists()
+    public function getOverview()
     {
         $response = $this->client->get('lists');
 
@@ -45,7 +29,7 @@ class ListsApi extends BaseApi
      * @param $name
      * @return bool
      */
-    public function createList($name)
+    public function create($name)
     {
         if (strlen($name) <= 0) {
             return false;

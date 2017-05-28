@@ -15,10 +15,17 @@ Route::get('/', function () {
 })->name('home');
 
 Route::group(['prefix' => '/lists'], function () {
-    Route::get('/', 'ListsController@index')->name('lists_overview');
+    Route::get('/', 'ListsController@overview')->name('lists_overview');
 
     Route::get('/create', 'ListsController@create')->name('lists_create');
     Route::post('/create', 'ListsController@store')->name('lists_store');
 
-    Route::get('/{:id}', 'ListsController@details')->name('lists_details');
+    Route::group(['prefix' => '/{list_id}'], function() {
+
+        Route::get('/', 'ItemsController@overview')->name('items_overview');
+        Route::get('/create', 'ItemsController@create')->name('items_create');
+        Route::post('/create', 'ItemsController@store')->name('items_store');
+        Route::get('/{item_id}', 'ItemsController@view')->name('items_view');
+        Route::post('/{item_id}', 'ItemsController@update')->name('items_update');
+    });
 });

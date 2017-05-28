@@ -2,40 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Modules\Api\ItemsApi;
 use App\Modules\Api\ListsApi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 
-class ListsController extends BaseController
+class ItemsController extends BaseController
 {
     /**
-     * @param ListsApi $api
+     * @param ItemsApi|$api
      * @return \Illuminate\View\View
      */
-    public function overview(ListsApi $api)
+    public function overview($list_id, ItemsApi $api)
     {
-        return view('lists.index')->with([
-            'lists' => $api->getOverview()
+        return view('items.index')->with([
+            'data' => $api->setListId($list_id)->getOverview()
         ]);
     }
 
     /**
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create($list_id, ItemsApi $api)
     {
-        return view('lists.form');
+        return view('items.form')
+            ->with([
+                'data' => $api->setListId($list_id)->getOverview()
+            ]);
     }
 
     /**
      * @param Request $request
-     * @param ListsApi $api
+     * @param ItemsApi $api
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, ListsApi $api)
+    public function store($list_id, Request $request, ItemsApi $api)
     {
         $data = $request->all();
-        if($api->create(array_get($data, 'name')) === false) {
+        if($api->setListId($list_id)->create($data) === false) {
             return redirect()->back()->withErrors([
                 'name' => 'error'
             ]);
