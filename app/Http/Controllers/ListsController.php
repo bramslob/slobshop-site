@@ -20,11 +20,23 @@ class ListsController extends BaseController
     }
 
     /**
+     * @param null $list_id
+     * @param ListsApi $api
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function form($list_id = null, ListsApi $api)
     {
-        return view('lists.form');
+        $list = null;
+        if (null !== $list_id) {
+            $api_list = $api->setListId($list_id)->getList();
+
+            $list = $api_list['lists'];
+        }
+
+        return view('lists.partials.form_modal')->with([
+            'list' => $list,
+            'action' => null === $list ? 'create' : 'edit'
+        ]);
     }
 
     /**
@@ -32,10 +44,10 @@ class ListsController extends BaseController
      * @param ListsApi $api
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request, ListsApi $api)
+    public function store($list_id = null, Request $request, ListsApi $api)
     {
         $data = $request->all();
-        if($api->create(array_get($data, 'name')) === false) {
+        if ($api->create(array_get($data, 'name')) === false) {
             return redirect()->back()->withErrors([
                 'name' => 'error'
             ]);
@@ -44,13 +56,4 @@ class ListsController extends BaseController
         return redirect()->route('lists_overview');
     }
 
-    public function edit()
-    {
-        return view('lists.form');
-    }
-
-    public function update()
-    {
-
-    }
 }
