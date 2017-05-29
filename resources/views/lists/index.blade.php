@@ -10,7 +10,7 @@
         <div class="level-left">
             <div class="level-item">
                 <p class="subtitle is-5">
-                    <strong>{{ $lists->count() }}</strong> posts
+                    <strong>{{ count($data['lists']) }}</strong> posts
                 </p>
             </div>
         </div>
@@ -25,11 +25,12 @@
     </nav>
 
     <div class="lists-container">
-        @foreach($lists as $list)
+        @foreach($data['lists'] as $list)
             <div class="list card">
                 <header class="card-header">
                     <a class="card-header-title">
                         {{ $list['name'] }}
+                        {{ $list['updated_at']->diffForHumans() }}
                     </a>
                 </header>
             </div>

@@ -16,13 +16,10 @@ class ListsApi extends BaseApi
             return collect([]);
         }
 
-        $json = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
+        $this->parseBody($body);
 
-        if (empty($json['lists'])) {
-            return collect([]);
-        }
-
-        return collect($json['lists']);
+        return collect($body);
     }
 
     /**
@@ -45,12 +42,6 @@ class ListsApi extends BaseApi
             return false;
         }
 
-        $json = json_decode($response->getBody(), true);
-
-        if (empty($json['list'])) {
-            return false;
-        }
-
-        return true;
+        return $this->bodyHas('lists', $response->getBody());
     }
 }

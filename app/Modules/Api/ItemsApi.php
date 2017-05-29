@@ -22,13 +22,13 @@ class ItemsApi extends BaseApi
             return collect([]);
         }
 
-        $json = json_decode($response->getBody(), true);
+        $body = json_decode($response->getBody(), true);
 
-        return collect($json);
+        return collect($this->parseBody($body));
     }
 
     /**
-     * @param $name
+     * @param $data
      * @return bool
      */
     public function create($data)
@@ -49,13 +49,7 @@ class ItemsApi extends BaseApi
             return false;
         }
 
-        $json = json_decode($response->getBody(), true);
-
-        if (empty($json['list'])) {
-            return false;
-        }
-
-        return true;
+        return $this->bodyHas('items', $response->getBody());
     }
 
     /**

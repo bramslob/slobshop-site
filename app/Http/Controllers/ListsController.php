@@ -15,7 +15,7 @@ class ListsController extends BaseController
     public function overview(ListsApi $api)
     {
         return view('lists.index')->with([
-            'lists' => $api->getOverview()
+            'data' => $api->getOverview()
         ]);
     }
 

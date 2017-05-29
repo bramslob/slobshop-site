@@ -24,12 +24,13 @@
         </div>
     </nav>
 
-    <div class="lists-container">
+    <div class="items-container">
         @foreach($data['items'] as $item)
-            <div class="list card">
+            <div class="item card">
                 <header class="card-header">
                     <a class="card-header-title">
                         {{ $item['name'] }}
+                        {{ $item['updated_at']->diffForHumans() }}
                     </a>
                 </header>
             </div>
