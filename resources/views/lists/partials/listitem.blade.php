@@ -10,7 +10,7 @@
         </a>
         <a class="card-header-icon is-hidden-mobile"
            href="javascript:void(0);"
-           onclick="showDetails(this)">
+           onclick="app.showDetails(this)">
           <span class="icon rotatable">
             <i class="fa fa-angle-down"></i>
           </span>
