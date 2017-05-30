@@ -21,40 +21,53 @@ class ItemsController extends BaseController
     }
 
     /**
+     * @param null $list_id
+     * @param null $item_id
+     * @param ItemsApi $api
      * @return \Illuminate\View\View
      */
-    public function create($list_id, ItemsApi $api)
+    public function form($list_id, $item_id = null, ItemsApi $api)
     {
-        return view('items.form')
-            ->with([
-                'data' => $api->setListId($list_id)->getOverview()
-            ]);
+        $api->setListId($list_id);
+        $item = null;
+
+        if (null !== $item_id) {
+            $api_item = $api->setItemId($item_id)->getItem();
+            $item = $api_item['items'][0];
+        }
+
+        return view('items.partials.form_modal')->with([
+            'item' => $item,
+            'list_id' => $list_id,
+            'item_id' => $item_id,
+            'action' => null === $item ? 'create' : 'update'
+        ]);
     }
 
     /**
+     * @param null $list_id
+     * @param null $item_id
      * @param Request $request
-     * @param ItemsApi $api
+     * @param ItemsApi|ListsApi $api
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store($list_id, Request $request, ItemsApi $api)
+    public function store($list_id, $item_id = null, Request $request, ItemsApi $api)
     {
+        $api->setListId($list_id);
+
         $data = $request->all();
-        if($api->setListId($list_id)->create($data) === false) {
-            return redirect()->back()->withErrors([
-                'name' => 'error'
-            ]);
+
+        if ($data['action'] === 'update'
+            && $api->setItemId($item_id)->update($data) !== false
+        ) {
+            return redirect()->route('items_overview', ['list_id' => $list_id]);
+        }
+        if ($api->create($data) !== false) {
+            return redirect()->route('items_overview', ['list_id' => $list_id]);
         }
 
-        return redirect()->route('lists_overview');
-    }
-
-    public function edit()
-    {
-        return view('lists.form');
-    }
-
-    public function update()
-    {
-
+        return redirect()->back()->withErrors([
+            'name' => 'error'
+        ]);
     }
 }

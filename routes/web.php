@@ -24,8 +24,8 @@ Route::group(['prefix' => '/lists'], function () {
     Route::group(['prefix' => '/{list_id}'], function() {
 
         Route::get('/', 'ItemsController@overview')->name('items_overview');
-        Route::get('/create', 'ItemsController@create')->name('items_create');
-        Route::post('/create', 'ItemsController@store')->name('items_store');
+        Route::get('/form/{item_id?}', 'ItemsController@form')->name('items_form');
+        Route::post('/form/{item_id?}', 'ItemsController@store')->name('items_store');
         Route::get('/{item_id}', 'ItemsController@view')->name('items_view');
         Route::post('/{item_id}', 'ItemsController@update')->name('items_update');
     });

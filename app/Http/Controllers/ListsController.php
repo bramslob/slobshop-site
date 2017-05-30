@@ -35,11 +35,13 @@ class ListsController extends BaseController
 
         return view('lists.partials.form_modal')->with([
             'list' => $list,
-            'action' => null === $list ? 'create' : 'edit'
+            'list_id' => $list_id,
+            'action' => null === $list ? 'create' : 'update'
         ]);
     }
 
     /**
+     * @param null $list_id
      * @param Request $request
      * @param ListsApi $api
      * @return \Illuminate\Http\RedirectResponse
@@ -48,20 +50,16 @@ class ListsController extends BaseController
     {
         $data = $request->all();
         if ($data['action'] === 'update'
-            && $api->setListId($list_id)->update(array_get($data, 'name')) === false
+            && $api->setListId($list_id)->update(array_get($data, 'name')) !== false
         ) {
-            return redirect()->back()->withErrors([
-                'name' => 'error'
-            ]);
-
-        } elseif ($api->create(array_get($data, 'name')) === false) {
-            return redirect()->back()->withErrors([
-                'name' => 'error'
-            ]);
+            return redirect()->route('lists_overview');
+        }
+        if ($api->create(array_get($data, 'name')) !== false) {
+            return redirect()->route('lists_overview');
         }
 
-        return redirect()->route('lists_overview');
+        return redirect()->back()->withErrors([
+            'name' => 'error'
+        ]);
     }
-
-
 }

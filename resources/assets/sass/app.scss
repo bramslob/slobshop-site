@@ -5,6 +5,21 @@
 .rotatable {
   transition: transform 0.3s;
 }
+
 .rotated {
   transform: rotate3d(0, 0, 1, 180deg);
+}
+.checked-item {
+  color: $green;
+}
+
+@media screen and (max-width: 768px) {
+  .card .is-narrow {
+    flex: none;
+  }
+}
+@media screen and (max-width: 640px) {
+  .is-hidden-phone {
+    display: none!important;
+  }
 }

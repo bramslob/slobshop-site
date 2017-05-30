@@ -31,6 +31,7 @@
 
     <div class="lists-container">
         @foreach($data['lists'] as $list)
+
             @include('lists.partials.listitem')
 
             @if(!$loop->last)

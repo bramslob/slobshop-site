@@ -12,11 +12,36 @@ class ItemsApi extends BaseApi
      */
     public function getOverview()
     {
-        if(empty($this->list_id)) {
+        if (empty($this->list_id)) {
             throw new \InvalidArgumentException('A list id is required');
         }
 
-        $response = $this->client->get('lists/' . $this->list_id. '/items');
+        $response = $this->client->get('lists/' . $this->list_id . '/items');
+
+        if ($this->checkResponse($response) === false) {
+            return collect([]);
+        }
+
+        $body = json_decode($response->getBody(), true);
+        $this->parseBody($body);
+
+        return collect($body);
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public function getItem()
+    {
+        if (empty($this->list_id)) {
+            throw new \InvalidArgumentException('A list id is required');
+        }
+
+        if (empty($this->item_id)) {
+            throw new \InvalidArgumentException('An item id is required');
+        }
+
+        $response = $this->client->get('lists/' . $this->list_id . '/items/' . $this->item_id);
 
         if ($this->checkResponse($response) === false) {
             return collect([]);
@@ -34,7 +59,7 @@ class ItemsApi extends BaseApi
      */
     public function create($data)
     {
-        if(empty($this->list_id)) {
+        if (empty($this->list_id)) {
             throw new \InvalidArgumentException('A list id is required');
         }
 
@@ -42,7 +67,35 @@ class ItemsApi extends BaseApi
             return false;
         }
 
-        $response = $this->client->post('lists/' . $this->list_id. '/items', [
+        $response = $this->client->post('lists/' . $this->list_id . '/items', [
+            'form_params' => $data
+        ]);
+
+        if ($this->checkResponse($response) === false) {
+            return false;
+        }
+
+        return $this->bodyHas('items', $response->getBody());
+    }
+
+    /**
+     * @param $data
+     * @return bool
+     */
+    public function update($data)
+    {
+        if (empty($this->list_id)) {
+            throw new \InvalidArgumentException('A list id is required');
+        }
+        if (empty($this->list_id)) {
+            throw new \InvalidArgumentException('An item id is required');
+        }
+
+        if (count($data) <= 0) {
+            return false;
+        }
+
+        $response = $this->client->post('lists/' . $this->list_id . '/items/' . $this->item_id, [
             'form_params' => $data
         ]);
 
