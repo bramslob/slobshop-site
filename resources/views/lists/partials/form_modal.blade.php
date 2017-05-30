@@ -1,7 +1,8 @@
 <div class="modal">
     <div class="modal-background"></div>
     <div class="modal-card">
-        {!! Form::model($list, ['route' => 'lists_store']) !!}
+        {!! Form::model($list, ['route' => 'lists_store', 'id' => 'lists_form']) !!}
+        {!! Form::hidden('action', $action) !!}
         <header class="modal-card-head">
             <p class="modal-card-title">{{ $action === 'create' ? 'Nieuwe lijst' : 'Lijst wijzigen' }}</p>
             <span class="delete" onclick="closeModal();"></span>
@@ -28,3 +29,14 @@
         {!! Form::close() !!}
     </div>
 </div>
+
+<script>
+    $('#lists_form').on('submit', function () {
+        var $form = $(this);
+
+        $form.attr('disabled', 'disabled');
+        $form.find('.is-success')
+            .attr('disabled', 'disabled')
+            .addClass('is-loading')
+    });
+</script>

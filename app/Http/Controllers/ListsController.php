@@ -47,7 +47,14 @@ class ListsController extends BaseController
     public function store($list_id = null, Request $request, ListsApi $api)
     {
         $data = $request->all();
-        if ($api->create(array_get($data, 'name')) === false) {
+        if ($data['action'] === 'update'
+            && $api->setListId($list_id)->update(array_get($data, 'name')) === false
+        ) {
+            return redirect()->back()->withErrors([
+                'name' => 'error'
+            ]);
+
+        } elseif ($api->create(array_get($data, 'name')) === false) {
             return redirect()->back()->withErrors([
                 'name' => 'error'
             ]);
@@ -55,5 +62,6 @@ class ListsController extends BaseController
 
         return redirect()->route('lists_overview');
     }
+
 
 }

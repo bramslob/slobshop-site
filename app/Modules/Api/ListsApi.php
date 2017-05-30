@@ -68,6 +68,33 @@ class ListsApi extends BaseApi
     }
 
     /**
+     * @param $name
+     * @return bool
+     */
+    public function update($name)
+    {
+        if(empty($this->list_id)) {
+            throw new \InvalidArgumentException('A list id is required');
+        }
+
+        if (strlen($name) <= 0) {
+            return false;
+        }
+
+        $response = $this->client->post('lists/' . $this->list_id, [
+            'form_params' => [
+                'name' => $name
+            ]
+        ]);
+
+        if ($this->checkResponse($response) === false) {
+            return false;
+        }
+
+        return $this->bodyHas('lists', $response->getBody());
+    }
+
+    /**
      * @param mixed $list_id
      * @return ListsApi
      */
