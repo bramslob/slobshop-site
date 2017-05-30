@@ -70,4 +70,22 @@ class ItemsController extends BaseController
             'name' => 'error'
         ]);
     }
+
+    /**
+     * @param $list_id
+     * @param null $item_id
+     * @param Request $request
+     * @param ItemsApi $api
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function check($list_id, $item_id = null, Request $request, ItemsApi $api)
+    {
+        $api->setListId($list_id);
+        if ($api->setItemId($item_id)->check() !== false) {
+            return response()->json([]);
+        }
+
+        return response()
+            ->json([], 402);
+    }
 }

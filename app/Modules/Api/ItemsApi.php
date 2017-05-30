@@ -125,4 +125,24 @@ class ItemsApi extends BaseApi
         $this->list_id = $list_id;
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function check()
+    {
+        if (empty($this->list_id)) {
+            throw new \InvalidArgumentException('A list id is required');
+        }
+        if (empty($this->list_id)) {
+            throw new \InvalidArgumentException('An item id is required');
+        }
+        $response = $this->client->post('lists/' . $this->list_id . '/items/' . $this->item_id . '/check');
+
+        if ($this->checkResponse($response) === false) {
+            return false;
+        }
+
+        return $this->bodyHas('items', $response->getBody());
+    }
 }

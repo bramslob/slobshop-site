@@ -27,6 +27,6 @@ Route::group(['prefix' => '/lists'], function () {
         Route::get('/form/{item_id?}', 'ItemsController@form')->name('items_form');
         Route::post('/form/{item_id?}', 'ItemsController@store')->name('items_store');
         Route::get('/{item_id}', 'ItemsController@view')->name('items_view');
-        Route::post('/{item_id}', 'ItemsController@update')->name('items_update');
+        Route::post('/{item_id}/check', 'ItemsController@check')->name('items_check');
     });
 });

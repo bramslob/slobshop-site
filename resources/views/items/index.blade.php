@@ -43,7 +43,7 @@
     <div class="items-container">
         @foreach($data['items'] as $item)
 
-            @include('items.partials.item')
+            @include('items.partials.item', ['list' => $data['list']])
 
             @if(!$loop->last)
                 <br/>
@@ -81,40 +81,36 @@
             });
         }
 
-        function closeModal() {
-            $modal_container
-                .find('.modal')
-                .removeClass('is-active');
-        }
+        $('.items-container').on('click', '.item-check-button', function (event) {
+            event.preventDefault();
 
-        function showDetails(element) {
-            if (details_sliding !== false) {
-                return false;
-            }
+            var $element = $(this),
+                $icon = $element.find('.fa'),
+                url = $element.attr('href'),
+                checked = $element.data('checked'),
+                new_checked = checked === 1 ? 0 : 1,
+                request;
 
-            details_sliding = true;
-
-            var $element = $(element),
-                $parent = $element.parents('.card'),
-                $arrow = $element.find('.icon'),
-                $details = $parent.find('.card-footer');
-
-            if ($parent.data('openDetails') !== true) {
-
-                $arrow.addClass('rotated');
-                $details.slideDown(200, function () {
-                    $parent.data('openDetails', true);
-                    details_sliding = false;
-                });
-                return;
-            }
-
-            $arrow.removeClass('rotated');
-            $details.slideUp(200, function () {
-
-                $parent.data('openDetails', false);
-                details_sliding = false;
+            request = $.ajax({
+                method: 'POST',
+                url: url,
             });
-        }
+
+            $element.addClass('is-loading');
+            $icon.removeClass('fa-square-o fa-check-square-o checked-item');
+
+            request.done(function () {
+                if (new_checked === 1) {
+                    $icon.addClass('fa-check-square-o checked-item');
+                }
+                else {
+                    $icon.addClass('fa-square-o');
+
+                }
+                $element.data('checked', new_checked);
+                $element.removeClass('is-loading');
+            });
+
+        });
     </script>
 @endsection

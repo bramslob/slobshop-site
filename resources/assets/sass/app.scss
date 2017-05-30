@@ -18,8 +18,17 @@
     flex: none;
   }
 }
+@media screen and (min-width: 641px) {
+
+  .is-visible-phone {
+    display: none!important;
+  }
+}
 @media screen and (max-width: 640px) {
   .is-hidden-phone {
     display: none!important;
+  }
+  .is-visible-phone {
+    display: block!important;
   }
 }
