@@ -4,7 +4,7 @@
         {!! Form::model($list, ['route' => 'lists_store']) !!}
         <header class="modal-card-head">
             <p class="modal-card-title">{{ $action === 'create' ? 'Nieuwe lijst' : 'Lijst wijzigen' }}</p>
-            <button class="delete"></button>
+            <span class="delete" onclick="closeModal();"></span>
         </header>
         <section class="modal-card-body">
             <div class="field is-horizontal">
@@ -23,7 +23,7 @@
         </section>
         <footer class="modal-card-foot">
             <button class="button is-success" type="submit">Save changes</button>
-            <a class="button" href="javascript:void(0);" onclick="">Cancel</a>
+            <a class="button" href="javascript:void(0);" onclick="closeModal();">Cancel</a>
         </footer>
         {!! Form::close() !!}
     </div>

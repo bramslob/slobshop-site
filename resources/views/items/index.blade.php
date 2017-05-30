@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <nav class="level">
+    <nav class="level is-mobile">
         <div class="level-left">
             <div class="level-item">
                 <p class="subtitle is-5">
@@ -19,7 +19,7 @@
                 <span class="icon">
                   <i class="fa fa-plus"></i>
                 </span>
-                <span>Create</span>
+                <span class="is-hidden-mobile">Create</span>
             </a>
         </div>
     </nav>
