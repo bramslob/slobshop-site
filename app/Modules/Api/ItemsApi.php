@@ -23,8 +23,9 @@ class ItemsApi extends BaseApi
         }
 
         $body = json_decode($response->getBody(), true);
+        $this->parseBody($body);
 
-        return collect($this->parseBody($body));
+        return collect($body);
     }
 
     /**
