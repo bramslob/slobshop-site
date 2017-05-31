@@ -33,7 +33,9 @@
     </section>
 </div>
 <script src="{{ mix('/js/app.js') }}" type="text/javascript"></script>
-
+<script>
+    App = new app($('#modal_container'));
+</script>
 @yield('script')
 
 </body>

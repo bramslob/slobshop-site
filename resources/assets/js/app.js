@@ -8,6 +8,7 @@ $(function() {
         }
     });
 });
+
 import app from './modules/general';
 
 window.app = app;

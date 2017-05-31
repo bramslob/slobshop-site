@@ -1,29 +1,39 @@
-export default {
-    closeModal: () => {
-        $modal_container
+export default class {
+
+    constructor($modal_container) {
+        this.$modal_container = $modal_container;
+        this.details_sliding = false;
+    }
+
+    closeModal() {
+        this.$modal_container
             .find('.modal')
             .removeClass('is-active');
-    },
 
-    showDetails: (element) => {
-        if (details_sliding !== false) {
+        this.$modal_container.off();
+    }
+
+    showDetails(element) {
+        if (this.details_sliding !== false) {
             return false;
         }
 
-        details_sliding = true;
+        this.details_sliding = true;
 
-        var $element = $(element),
+        let $element = $(element),
             $parent = $element.parents('.card'),
             $arrow = $element.find('.icon'),
-            $details = $parent.find('.card-footer');
+            $details = $parent.find('.card-footer'),
+            self = this;
 
         if ($parent.data('openDetails') !== true) {
 
             $arrow.addClass('rotated');
             $details.slideDown(200, function () {
                 $parent.data('openDetails', true);
-                details_sliding = false;
+                self.details_sliding = false;
             });
+
             return;
         }
 
@@ -31,8 +41,31 @@ export default {
         $details.slideUp(200, function () {
 
             $parent.data('openDetails', false);
-            details_sliding = false;
+            self.details_sliding = false;
         });
     }
 
+    showFormModal(url) {
+
+        let self = this;
+
+        $.ajax(
+            {
+                method: 'GET',
+                url: url,
+                dataType: 'html'
+            })
+            .done(function (response) {
+                self.$modal_container
+                    .html(response);
+
+                self.$modal_container
+                    .find('.modal')
+                    .addClass('is-active');
+
+                self.$modal_container.on('click', '.modal-background', function() {
+                    self.closeModal();
+                })
+            });
+    }
 }

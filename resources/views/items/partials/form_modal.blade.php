@@ -5,7 +5,7 @@
         {!! Form::hidden('action', $action) !!}
             <header class="modal-card-head">
             <p class="modal-card-title">{{ $action === 'create' ? 'Nieuw item' : 'Item wijzigen' }}</p>
-            <span class="delete" onclick="closeModal();"></span>
+            <span class="delete" onclick="App.closeModal();"></span>
         </header>
         <section class="modal-card-body">
             <div class="field is-horizontal">
@@ -55,7 +55,7 @@
         </section>
         <footer class="modal-card-foot">
             <button class="button is-success" type="submit">Opslaan</button>
-            <a class="button" href="javascript:void(0);" onclick="closeModal();">Annuleren</a>
+            <a class="button" href="javascript:void(0);" onclick="App.closeModal();">Annuleren</a>
         </footer>
         {!! Form::close() !!}
     </div>

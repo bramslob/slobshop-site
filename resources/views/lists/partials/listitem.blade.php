@@ -10,7 +10,7 @@
         </a>
         <a class="card-header-icon is-hidden-mobile"
            href="javascript:void(0);"
-           onclick="app.showDetails(this)">
+           onclick="App.showDetails(this)">
           <span class="icon rotatable">
             <i class="fa fa-angle-down"></i>
           </span>
@@ -19,7 +19,7 @@
     <footer class="card-footer is-narrow is-flex-mobile" style="display: none;">
         <a class="card-footer-item"
            href="javascript:void(0);"
-           onclick="showFormModal({{ $list['id'] }});">
+           onclick="App.showFormModal('{{ route('lists_form', ['list_id' => $list['id']]) }}')">
             <i class="fa fa-pencil"></i> &nbsp;
             <span class="is-hidden-mobile">
                 Edit

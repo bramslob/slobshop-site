@@ -28,7 +28,7 @@
         <div class="level-right">
             <a class="button is-medium"
                href="javascript:void(0);"
-               onclick="showFormModal(0);">
+               onclick="App.showFormModal('{{ route('items_form', ['list_id' => $data['list']['id']]) }}')">
 
                 <span class="icon">
                   <i class="fa fa-plus"></i>
@@ -54,33 +54,6 @@
 
 @section('script')
     <script>
-        var form_url = {!!  json_encode(route('items_form', ['list_id' => $data['list']['id']])) !!},
-            details_sliding = false,
-            $modal_container = $('#modal_container');
-
-        function showFormModal(list_id) {
-            var url = form_url;
-
-            if (parseInt(list_id) > 0) {
-                url += '/' + parseInt(list_id);
-            }
-
-            var request = $.ajax({
-                method: 'GET',
-                url: url,
-                dataType: 'html'
-            });
-
-            request.done(function (response) {
-                $modal_container
-                    .html(response);
-
-                $modal_container
-                    .find('.modal')
-                    .addClass('is-active');
-            });
-        }
-
         $('.items-container').on('click', '.item-check-button', function (event) {
             event.preventDefault();
 
